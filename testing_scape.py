@@ -1,8 +1,8 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
-import requests
 import pandas as pd
 import os
-import logging
 
 # Function to extract Product Title
 def get_title(soup):
@@ -76,8 +76,8 @@ def get_availability(soup):
 
     return available
 
-def main():
 
+def main():
     # add your user agent
     HEADERS = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
 
@@ -85,22 +85,23 @@ def main():
     TAGS = ['Mobile Phones']#,"Laptops","Television","Shoes"]
     URLS = [f"https://www.flipkart.com/search?q={i.replace(' ','%20')}&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off" for i in TAGS]
 
-    #store links
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    options.add_argument('--headless')
+    options.add_argument('log-level=3')
+    driver = webdriver.Chrome(options=options)
+    for key, value in HEADERS.items():
+        options.add_argument(f"--{key}={value}")
+
     links_list = []
     for URL in URLS:
-        # HTTP Request
-        #webpage = requests.get(URL, headers=HEADERS)
-        #print(HEADERS)
-        session = requests.Session()
-        session.headers.update(HEADERS)
-        webpage = session.get(URL,verify=False)
-
-        # Soup Object containing all data
-        soup = BeautifulSoup(webpage.content, "html.parser")
-
-
-        # Fetch links as List of Tag Objects
-        links = soup.find_all("a", attrs={'class':'CGtC98'})
+        driver.get(URL)
+        page_source = driver.page_source
+        soup = BeautifulSoup(page_source,'html.parser')
+        #links = soup.find_all("a", attrs={'class':'CGtC98'})
+        links = driver.find_elements(By.CLASS_NAME,'CGtC98')
+        print(links)
+        return
 
         # Loop for extracting links from Tag Objects
         for link in links:
@@ -113,9 +114,9 @@ def main():
     # Loop for extracting product details from each link
     for link in links_list:
         try:
-            new_webpage = requests.get("https://www.flipkart.com" + link, headers=HEADERS)
+            new_page_source = driver.get('https://www.flipkart.com' + link)
 
-            new_soup = BeautifulSoup(new_webpage.content, "html.parser")
+            new_soup = BeautifulSoup(new_page_source.content, "html.parser")
 
             # Function calls to display all necessary product information
             d['title'].append(get_title(new_soup))
@@ -139,4 +140,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
