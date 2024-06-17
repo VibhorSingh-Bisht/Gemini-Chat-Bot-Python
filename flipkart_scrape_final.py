@@ -93,7 +93,7 @@ def main():
         #print(HEADERS)
         session = requests.Session()
         session.headers.update(HEADERS)
-        webpage = session.get(URL,verify=False)
+        webpage = session.get(URL)
 
         # Soup Object containing all data
         soup = BeautifulSoup(webpage.content, "html.parser")

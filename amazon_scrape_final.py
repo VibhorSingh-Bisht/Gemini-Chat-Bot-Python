@@ -81,10 +81,10 @@ def get_availability(soup):
 def main():
 
     # add your user agent
-    HEADERS = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
+    HEADERS = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
 
     # The webpage URL
-    TAGS = ['Mobile Phones',"Laptops","Television","Shoes"]
+    TAGS = ['Mobile Phones',"Laptops","Television","Shoes","Ear phones",]
     URLS = [f"https://www.amazon.in/s?k={i.replace(' ','+')}&ref=nb_sb_noss" for i in TAGS]
 
     #store links
