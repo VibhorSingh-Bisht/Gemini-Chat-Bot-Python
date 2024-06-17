@@ -2,13 +2,12 @@ import streamlit as st
 from data_ingestion import load_data
 from embeddings import download_gemini_embedding
 from main import load_model
-import amazon_scrape_final
-import os
+
     
 def main():
-    file_path = f'{os.getcwd()}\\data\\amazon_data.csv'
-    if not os.path.isfile(file_path):
-        amazon_scrape_final.main()
+    # file_path = f'{os.getcwd()}\\data\\amazon_data.csv'
+    # if not os.path.isfile(file_path):
+    #     amazon_scrape_final.main()
     st.set_page_config("Recommendation System")
     
     doc=st.file_uploader("upload your document")
