@@ -88,7 +88,7 @@ def get_image(soup):
 
 def main():
     HEADERS = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
-    TAGS = ['Mobile Phones']#,"Laptops","Television","Shoes"]
+    TAGS = ['Mobile Phones',"Laptops","Television","Shoes"]
     URLS = [f"https://www.flipkart.com/search?q={i.replace(' ','%20')}&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off" for i in TAGS]
 
     options = webdriver.ChromeOptions()
@@ -145,7 +145,7 @@ def main():
     amazon_df = pd.DataFrame.from_dict(d)
     amazon_df = amazon_df.replace({'title': ''}, pd.NA)
     amazon_df = amazon_df.dropna(subset=['title'])
-    file_path = f'{os.getcwd()}\\data\\flipkart.csv'
+    file_path = f'{os.getcwd()}\\data\\amazon_data.csv'
     if not os.path.isfile(file_path):
         amazon_df.to_csv(file_path, mode='w', index=False, header=True)
     else:
