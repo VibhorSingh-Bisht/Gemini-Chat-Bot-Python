@@ -74,8 +74,6 @@ def get_image(soup):
             srcset = image['srcset']
             # Split the srcset into individual URLs
             srcset_urls = srcset.split(',')
-            print(srcset)
-            print(srcset_urls)
             # Extract the second URL
             if len(srcset_urls) > 1:
                 return srcset_urls[0]
