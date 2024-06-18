@@ -1,3 +1,5 @@
+#main.py
+
 import os
 from dotenv import load_dotenv
 import sys
@@ -8,7 +10,6 @@ from exception import customexception
 from logger import logging
 
 load_dotenv()
-
 GOOGLE_API_KEY=os.getenv("GOOGLE_API_KEY")
 
 genai.configure(api_key=GOOGLE_API_KEY)

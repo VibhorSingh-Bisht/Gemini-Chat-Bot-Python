@@ -1,3 +1,5 @@
+#embeddings.py
+
 from llama_index.core import VectorStoreIndex
 from llama_index.core import ServiceContext
 from llama_index.core import StorageContext, load_index_from_storage
@@ -20,7 +22,13 @@ def download_gemini_embedding(model,document):
     try:
         logging.info("")
         gemini_embed_model = GeminiEmbedding(model_name="models/embedding-001")
-        service_context = ServiceContext.from_defaults(llm=model,embed_model=gemini_embed_model, chunk_size=1000, chunk_overlap=200)
+        context = '''You are a friendly LLM model. You will provide accurate answer regarding the user question.
+        The output you will provide will be in a Table format and there would be all the information regarding the output.'''
+        service_context = ServiceContext.from_defaults(llm=model,
+                                                       embed_model=gemini_embed_model, 
+                                                       chunk_size=1000, 
+                                                       chunk_overlap=200
+                                                       )
         
         logging.info("")
         index = VectorStoreIndex.from_documents(document,service_context=service_context)
