@@ -1,5 +1,3 @@
-#main.py
-
 import os
 from dotenv import load_dotenv
 import sys
@@ -10,6 +8,7 @@ from exception import customexception
 from logger import logging
 
 load_dotenv()
+
 GOOGLE_API_KEY=os.getenv("GOOGLE_API_KEY")
 
 genai.configure(api_key=GOOGLE_API_KEY)
@@ -23,7 +22,7 @@ def load_model():
     - Gemini: An instance of the Gemini class initialized with the 'gemini-pro' model.
     """
     try:
-        model=Gemini(model='models/gemini-1.0-pro',api_key=GOOGLE_API_KEY)
+        model=Gemini(models='gemini-pro',api_key=GOOGLE_API_KEY)
         return model
     except Exception as e:
         raise customexception(e,sys)
