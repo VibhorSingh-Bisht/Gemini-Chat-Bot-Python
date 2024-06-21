@@ -1,3 +1,5 @@
+#main.py
+
 import os
 from dotenv import load_dotenv
 import sys
@@ -22,7 +24,7 @@ def load_model():
     - Gemini: An instance of the Gemini class initialized with the 'gemini-pro' model.
     """
     try:
-        model=Gemini(models='gemini-pro',api_key=GOOGLE_API_KEY)
+        model=Gemini(model='models/gemini-pro',api_key=GOOGLE_API_KEY)
         return model
     except Exception as e:
         raise customexception(e,sys)

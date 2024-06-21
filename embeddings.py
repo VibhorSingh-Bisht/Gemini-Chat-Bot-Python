@@ -20,14 +20,14 @@ def download_gemini_embedding(model,document):
     try:
         logging.info("")
         gemini_embed_model = GeminiEmbedding(model_name="models/embedding-001")
-        service_context = ServiceContext.from_defaults(llm=model,embed_model=gemini_embed_model, chunk_size=100, chunk_overlap=20)
+        service_context = ServiceContext.from_defaults(llm=model,embed_model=gemini_embed_model, chunk_size=1000, chunk_overlap=100)
         
         logging.info("")
         index = VectorStoreIndex.from_documents(document,service_context=service_context)
         index.storage_context.persist()
         
         logging.info("")
-        query_engine = index.as_query_engine(llm=model)
+        query_engine = index.as_query_engine()
         return query_engine
     except Exception as e:
         raise customexception(e,sys)

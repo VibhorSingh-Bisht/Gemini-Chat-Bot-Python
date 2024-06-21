@@ -36,7 +36,7 @@ def main():
                 response = query_engine.query(user_question)
 
                 # Display the response
-                st.write(response)
+                st.write(response.response)
             except Exception as e:
                 st.error("An error occurred during processing.")
                 st.error(str(e))
