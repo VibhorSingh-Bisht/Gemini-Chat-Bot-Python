@@ -14,7 +14,7 @@ def get_title(soup):
         title_value = title.text
 
         # Title as a string value
-        title_string = title_value.strip()
+        title_string = title_value.strip() 
 
     except AttributeError:
         title_string = ""
@@ -119,7 +119,7 @@ def main():
             link = link.split('pid')[0]
             links_list.append(link)
 
-    d = {"title":[], "price":[], "rating":[], "reviews":[],"Image URL":[]}
+    d = {"title":[], "price":[], "rating":[], "reviews":[],"Image URL":[],"Source":[]}
     # Loop for extracting product details from each link
     
     for link in links_list:
@@ -134,6 +134,8 @@ def main():
             d['rating'].append(get_rating(new_soup))
             d['reviews'].append(get_review_count(new_soup))
             d['Image URL'].append(get_image(new_soup))
+            d['Source'].append('Flipkart')
+
         except Exception as e:
             print(f'error in {link}: {e}')
             continue

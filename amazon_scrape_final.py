@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import numpy as np
 import os
+import json
 
 # Function to extract Product Title
 def get_title(soup):
@@ -15,7 +16,7 @@ def get_title(soup):
         title_value = title.text
 
         # Title as a string value
-        title_string = title_value.strip()
+        title_string = title_value.strip() 
 
     except AttributeError:
         title_string = ""
@@ -68,10 +69,19 @@ def get_review_count(soup):
     return review_count
 
 # Function to extract Availability Status
-def get_availability(soup):
+def get_image(soup):
     try:
-        available = soup.find("div", attrs={'id':'availability'})
-        available = available.find("span").string.strip()
+        image_url = soup.find("img", attrs={'id':'landingImage'})
+        if image_url:
+            data_a_dynamic_image = image_url.get('data-a-dynamic-image')
+            if data_a_dynamic_image:
+                # Parse the JSON data
+                image_urls = json.loads(data_a_dynamic_image)
+                # Get the first URL
+                first_url = next(iter(image_urls.keys()))
+                return first_url
+        else:
+            return "Not Available"
 
     except AttributeError:
         available = "Not Available"
@@ -84,7 +94,7 @@ def main():
     HEADERS = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
 
     # The webpage URL
-    TAGS = ['Mobile Phones',"Laptops","Television","Shoes","Ear phones",]
+    TAGS = ['Mobile Phones',"Laptops"]#,"Television","Shoes","Ear phones",]
     URLS = [f"https://www.amazon.in/s?k={i.replace(' ','+')}&ref=nb_sb_noss" for i in TAGS]
 
     #store links
@@ -105,7 +115,7 @@ def main():
             link = link.split('ref')[0]
             links_list.append(link)
 
-    d = {"title":[], "price":[], "rating":[], "reviews":[],"availability":[]}
+    d = {"title":[], "price":[], "rating":[], "reviews":[],"Image URL":[],'Source':[]}
 
     # Loop for extracting product details from each link
     for link in links_list:
@@ -119,9 +129,12 @@ def main():
             d['price'].append(get_price(new_soup))
             d['rating'].append(get_rating(new_soup))
             d['reviews'].append(get_review_count(new_soup))
-            d['availability'].append(get_availability(new_soup))
+            d['Image URL'].append(get_image(new_soup))
+            d['Source'].append("Amazon")
+            
         except:
             continue
+            
 
     amazon_df = pd.DataFrame.from_dict(d)
     amazon_df = amazon_df.replace({'title': ''}, pd.NA)
